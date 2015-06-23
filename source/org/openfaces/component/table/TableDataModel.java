@@ -509,6 +509,8 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
                     table.getClientId(FacesContext.getCurrentInstance()));
         Object value = valueExpression.getValue(FacesContext.getCurrentInstance().getELContext());
         restoreRequestVariable(VAR_FILTER_CRITERIA);
+        if(value.getClass().equals(Long.class) || value.getClass().equals(long.class))
+            value = ((Long)value).intValue();
         if (!(value instanceof Integer))
             throw new IllegalStateException("totalRowCount must return an int (or Integer) number, but returned: " +
                     (value != null ? value.getClass().getName() : "null") + "; table id = " + table.getClientId(FacesContext.getCurrentInstance()));
