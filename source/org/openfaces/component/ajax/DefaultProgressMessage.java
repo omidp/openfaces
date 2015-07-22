@@ -27,7 +27,7 @@ public class DefaultProgressMessage extends ProgressMessage {
     public static final String COMPONENT_TYPE = "org.openfaces.DefaultProgressMessage";
     public static final String COMPONENT_FAMILY = "org.openfaces.DefaultProgressMessage";
 
-    private static final String DEFAULT_AJAX_MESSAGE_TEXT = "Loading...";
+    private static final String DEFAULT_AJAX_MESSAGE_TEXT = "";
     private static final String DEFAULT_AJAX_IN_PROGRESS_MESSAGE_HTML =
             "<table class=''o_ajax_message {0}'' style=''{1}'' cellpadding=''0'' cellspacing=''0''>" +
                     "<tr><td valign=''middle'' style=''padding-right: 5px''><img src=''{2}''/></td><td valign=''middle''>{3}</td></tr></table>";
