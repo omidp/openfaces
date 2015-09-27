@@ -11,6 +11,8 @@
  */
 package org.openfaces.component.chart.impl.helpers;
 
+import java.awt.Font;
+
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.Plot;
 import org.openfaces.component.chart.Chart;
@@ -22,45 +24,57 @@ import org.openfaces.renderkit.cssparser.StyleObjectModel;
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class JFreeChartAdapter extends JFreeChart {
+public class JFreeChartAdapter extends JFreeChart
+{
 
-    public JFreeChartAdapter(Plot plot, Chart chart) {
-        super(null, JFreeChart.DEFAULT_TITLE_FONT, plot, false);
+    public JFreeChartAdapter(Plot plot, Chart chart)
+    {
+        super(null, chart.getFontFamily() == null ? JFreeChart.DEFAULT_TITLE_FONT : new Font(chart.getFontFamily(), Font.BOLD, 12), plot,
+                false);
 
-        if (chart.isLegendVisible()) {
+        if (chart.isLegendVisible())
+        {
             addSubtitle(new LegendAdapter(plot, chart));
         }
 
-        if (chart.getTitle() != null) {
+        if (chart.getTitle() != null)
+        {
             setTitle(new TextTitleAdapter(chart));
         }
 
-        //TODO: separate style properties
+        // TODO: separate style properties
 
         StyleObjectModel cssChartModel = chart.getStyleObjectModel();
-        if (cssChartModel != null) {
+        if (cssChartModel != null)
+        {
             setBackgroundPaint(cssChartModel.getBackground());
 
             StyleBorderModel border = cssChartModel.getBorder();
-            if (border != null && !border.isNone()) {
+            if (border != null && !border.isNone())
+            {
                 setBorderPaint(border.getColor());
                 setBorderVisible(true);
-            } else {
+            }
+            else
+            {
                 setBorderVisible(false);
             }
         }
 
         Float foregroundAlpha = chart.getChartView().getForegroundAlpha();
-        if (foregroundAlpha != null) {
+        if (foregroundAlpha != null)
+        {
             plot.setForegroundAlpha(foregroundAlpha);
         }
 
         ChartNoDataMessage chartNoDataMessage = chart.getNoDataMessage();
-        if (chartNoDataMessage != null && chartNoDataMessage.getText() != null) {
+        if (chartNoDataMessage != null && chartNoDataMessage.getText() != null)
+        {
             plot.setNoDataMessage(chartNoDataMessage.getText());
 
             StyleObjectModel cssMessageModel = chartNoDataMessage.getStyleObjectModel();
-            if (cssMessageModel != null) {
+            if (cssMessageModel != null)
+            {
                 plot.setNoDataMessagePaint(cssMessageModel.getColor());
                 plot.setNoDataMessageFont(CSSUtil.getFont(cssMessageModel));
             }

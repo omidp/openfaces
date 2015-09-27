@@ -39,6 +39,8 @@ public class Chart extends OUIComponentBase implements StyledComponent {
 
     private Integer width;
     private Integer height;
+    
+    private String fontFamily;
 
     private ChartViewType view;
     private ChartModel model;
@@ -86,6 +88,16 @@ public class Chart extends OUIComponentBase implements StyledComponent {
 
     public int getHeight() {
         return ValueBindings.get(this, "height", height, 400);
+    }
+    
+    public String getFontFamily()
+    {
+        return fontFamily;
+    }
+
+    public void setFontFamily(String fontFamily)
+    {
+        this.fontFamily = fontFamily;
     }
 
     public void setHeight(int height) {
