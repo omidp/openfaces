@@ -110,7 +110,7 @@ public class MapRenderUtilities {
             tag.append("<area");
 
             if (hasAction)
-                tag.append(" onclick=\"O$.setValue('").append(fieldId).append("','title'); O$.submitById('").append(fieldId).append("');\"");
+                tag.append(" style=\"cursor: pointer;\" onclick=\"O$.setValue('").append(fieldId).append("','title'); O$.submitById('").append(fieldId).append("');\"");
 
             tag.append(" shape=\"").append(entity.getShapeType()).append("\"" + " coords=\"").append(entity.getShapeCoords()).append("\"");
 
@@ -157,13 +157,13 @@ public class MapRenderUtilities {
             tag.append("<area");
 
             if (hasAction && !hasCustomClick)
-                tag.append(" onclick=\"O$.setValue('").append(fieldId).append("','").append(entityIndex).append("'); O$.submitById('").append(fieldId).append("');\"");
+                tag.append(" style=\"cursor: pointer;\" onclick=\"O$.setValue('").append(fieldId).append("','").append(entityIndex).append("'); O$.submitById('").append(fieldId).append("');\"");
 
             if (hasAction && hasCustomClick)
-                tag.append(" onclick=\"O$.setValue('").append(fieldId).append("','").append(entityIndex).append("'); ").append(onClick).append("O$.submitById('").append(fieldId).append("');\"");
+                tag.append(" style=\"cursor: pointer;\" onclick=\"O$.setValue('").append(fieldId).append("','").append(entityIndex).append("'); ").append(onClick).append("O$.submitById('").append(fieldId).append("');\"");
 
             if (!hasAction && hasCustomClick)
-                tag.append(" onclick=\"O$.setValue('").append(fieldId).append("','").append(entityIndex).append("'); ").append(onClick).append("\"");
+                tag.append(" style=\"cursor: pointer;\" onclick=\"O$.setValue('").append(fieldId).append("','").append(entityIndex).append("'); ").append(onClick).append("\"");
 
             if (hasCustomOnMouseOver)
                 tag.append(" onmouseover=\"").append(onMouseOver).append("\"");
