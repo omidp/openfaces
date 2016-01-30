@@ -44,6 +44,7 @@ public abstract class AbstractTableTag extends AbstractComponentTag {
         setStringProperty(component, "headerSectionClass");
         setStringProperty(component, "bodySectionStyle");
         setStringProperty(component, "bodySectionClass");
+        
         setStringProperty(component, "footerSectionStyle");
         setStringProperty(component, "footerSectionClass");
 
@@ -114,6 +115,7 @@ public abstract class AbstractTableTag extends AbstractComponentTag {
         setStringProperty(component, "onkeyup");
         setStringProperty(component, "onkeypress");
         setLiteralCollectionProperty(component, "columnsOrder");
+        setLiteralCollectionProperty(component, "renderColumnByIds");
 
         setIntProperty(component, "autoFilterDelay");
     }

@@ -297,6 +297,10 @@ public abstract class AbstractTableJspTag extends AbstractComponentJspTag {
     public void setColumnsOrder(ValueExpression columnsOrder) {
         getDelegate().setPropertyValue("columnsOrder", columnsOrder);
     }
+    
+    public void setRenderColumnByIds(ValueExpression renderColumnByIds) {
+        getDelegate().setPropertyValue("renderColumnByIds", renderColumnByIds);
+    }
 
 
     public void setSortedAscendingImageUrl(ValueExpression value) {

@@ -27,15 +27,18 @@ import java.util.Set;
 
 /**
  *
- * The DataTable component is used to display data in a tabular format and effectively manipulate it.
- * It supports the features of the JSF HtmlDataTable component and extends the standard functionality
- * with such advanced features as sorting, row selection (both multiple and single), pagination,
- * filtering, keyboard navigation, and dynamic data loading (using Ajax.) Plus, the DataTable
- * component provides special support for handling large datasets with minimal overhead.
+ * The DataTable component is used to display data in a tabular format and
+ * effectively manipulate it. It supports the features of the JSF HtmlDataTable
+ * component and extends the standard functionality with such advanced features
+ * as sorting, row selection (both multiple and single), pagination, filtering,
+ * keyboard navigation, and dynamic data loading (using Ajax.) Plus, the
+ * DataTable component provides special support for handling large datasets with
+ * minimal overhead.
  * 
  * @author Dmitry Pikhulya
  */
-public class DataTable extends AbstractTable {
+public class DataTable extends AbstractTable
+{
     public static final String COMPONENT_TYPE = "org.openfaces.DataTable";
     public static final String COMPONENT_FAMILY = "org.openfaces.DataTable";
     private static final String RENDERED_PAGE_COUNT_ATTR = "_renderedPageCount";
@@ -47,17 +50,20 @@ public class DataTable extends AbstractTable {
     private Boolean paginationKeyboardSupport;
     private Boolean customDataProviding;
 
-    public DataTable() {
+    public DataTable()
+    {
         setRendererType("org.openfaces.DataTableRenderer");
     }
 
     @Override
-    public String getFamily() {
+    public String getFamily()
+    {
         return COMPONENT_FAMILY;
     }
 
     @Override
-    public void setValueExpression(String name, ValueExpression expression) {
+    public void setValueExpression(String name, ValueExpression expression)
+    {
         super.setValueExpression(name, expression);
         if ("rowKey".equals(name))
             getModel().setRowKeyExpression(expression);
@@ -66,14 +72,15 @@ public class DataTable extends AbstractTable {
     }
 
     @Override
-    public Object saveState(FacesContext facesContext) {
+    public Object saveState(FacesContext facesContext)
+    {
         Object superState = super.saveState(facesContext);
-        return new Object[]{superState, rowIndexVar, pageSize, pageIndex, paginationKeyboardSupport,
-                customDataProviding};
+        return new Object[] { superState, rowIndexVar, pageSize, pageIndex, paginationKeyboardSupport, customDataProviding };
     }
 
     @Override
-    public void restoreState(FacesContext facesContext, Object object) {
+    public void restoreState(FacesContext facesContext, Object object)
+    {
         Object[] state = (Object[]) object;
         int i = 0;
         super.restoreState(facesContext, state[i++]);
@@ -85,7 +92,8 @@ public class DataTable extends AbstractTable {
     }
 
     @Override
-    protected void beforeProcessDecodes(FacesContext context) {
+    protected void beforeProcessDecodes(FacesContext context)
+    {
         super.beforeProcessDecodes(context);
         TableDataModel model = getModel();
         model.prepareForRestoringRowIndexes();
@@ -96,50 +104,62 @@ public class DataTable extends AbstractTable {
     }
 
     /**
-     * @return Returns the size of a page if the table is being paged and zero if the table is not being paged.
+     * @return Returns the size of a page if the table is being paged and zero
+     *         if the table is not being paged.
      */
-    public int getPageSize() {
+    public int getPageSize()
+    {
         return ValueBindings.get(this, "pageSize", pageSize, 0);
     }
 
-    public void setPageSize(int pageSize) {
+    public void setPageSize(int pageSize)
+    {
         if (pageSize < 0)
             throw new IllegalArgumentException("pageSize should either be zero or a positive number");
         this.pageSize = pageSize;
     }
 
-    public int getPageIndex() {
+    public int getPageIndex()
+    {
         return ValueBindings.get(this, "pageIndex", pageIndex, 0);
     }
 
-    public void setPageIndex(int pageIndex) {
+    public void setPageIndex(int pageIndex)
+    {
         if (pageIndex < 0)
             throw new IllegalArgumentException("pageIndex should either be zero or a positive number");
         this.pageIndex = pageIndex;
     }
 
-    public String getRowIndexVar() {
+    public String getRowIndexVar()
+    {
         return rowIndexVar;
     }
 
-    public void setRowIndexVar(String rowIndexVar) {
+    public void setRowIndexVar(String rowIndexVar)
+    {
         this.rowIndexVar = rowIndexVar;
     }
 
-    public boolean isPaginationKeyboardSupport() {
+    public boolean isPaginationKeyboardSupport()
+    {
         return ValueBindings.get(this, "paginationKeyboardSupport", paginationKeyboardSupport, true);
     }
 
-    public void setPaginationKeyboardSupport(boolean paginationKeyboardSupport) {
+    public void setPaginationKeyboardSupport(boolean paginationKeyboardSupport)
+    {
         this.paginationKeyboardSupport = paginationKeyboardSupport;
     }
 
     /**
-     * @return the number of pages if pagination is currently enabled. If pagination is disabled (by setting pageSize to 0) or
-     *         if the total number of rows is unknown then -1 is returned. Note the that if pagination is enabled then there will
-     *         always be at least one page even if there are no rows to show.
+     * @return the number of pages if pagination is currently enabled. If
+     *         pagination is disabled (by setting pageSize to 0) or if the total
+     *         number of rows is unknown then -1 is returned. Note the that if
+     *         pagination is enabled then there will always be at least one page
+     *         even if there are no rows to show.
      */
-    public int getPageCount() {
+    public int getPageCount()
+    {
         Integer renderedPageCount = getRenderedPageCount();
         if (renderedPageCount != null)
             return renderedPageCount;
@@ -147,16 +167,19 @@ public class DataTable extends AbstractTable {
             return getModel().getPageCount();
     }
 
-    public ValueExpression getValueExpression() {
+    public ValueExpression getValueExpression()
+    {
         return getValueExpression("value");
     }
 
-    public void setValueExpression(ValueExpression value) {
+    public void setValueExpression(ValueExpression value)
+    {
         setValueExpression("value", value);
     }
 
     @Override
-    protected void processModelUpdates(FacesContext context) {
+    protected void processModelUpdates(FacesContext context)
+    {
         super.processModelUpdates(context);
 
         if (pageIndex != null)
@@ -167,39 +190,48 @@ public class DataTable extends AbstractTable {
     }
 
     /**
-     * @return index of a page where a row with the specified rowKey is displayed, or -1 of no such row is being
-     * displayed.
-     * @param rowKey row key object for a row whose page index should be detected.
+     * @return index of a page where a row with the specified rowKey is
+     *         displayed, or -1 of no such row is being displayed.
+     * @param rowKey
+     *            row key object for a row whose page index should be detected.
      */
-    public int getPageIndexForRowKey(Object rowKey) {
+    public int getPageIndexForRowKey(Object rowKey)
+    {
         TableDataModel model = getModel();
         int pageCount = model.getPageCount();
         int prevPageIndex = getPageIndex();
-        try {
-            for (int pageIndex = 0; pageIndex < pageCount; pageIndex++) {
+        try
+        {
+            for (int pageIndex = 0; pageIndex < pageCount; pageIndex++)
+            {
                 model.setPageIndex(pageIndex);
                 model.setRowKey(rowKey);
                 int index = model.getRowIndex();
                 if (index != -1)
                     return pageIndex;
             }
-        } finally {
+        }
+        finally
+        {
             model.setPageIndex(prevPageIndex);
         }
         return -1;
     }
 
-    private Integer getRenderedPageCount() {
+    private Integer getRenderedPageCount()
+    {
         Integer renderedPageCountObj = (Integer) getAttributes().get(RENDERED_PAGE_COUNT_ATTR);
         return renderedPageCountObj;
     }
 
-    private void setRenderedPageCount(int renderedPageCount) {
+    private void setRenderedPageCount(int renderedPageCount)
+    {
         getAttributes().put(RENDERED_PAGE_COUNT_ATTR, renderedPageCount);
     }
 
     @Override
-    public void encodeBegin(FacesContext facesContext) throws IOException {
+    public void encodeBegin(FacesContext facesContext) throws IOException
+    {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(facesContext))
             return;
         beforeRenderResponse(facesContext);
@@ -209,32 +241,37 @@ public class DataTable extends AbstractTable {
     }
 
     @Override
-    public void encodeChildren(FacesContext context) throws IOException {
+    public void encodeChildren(FacesContext context) throws IOException
+    {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
         super.encodeChildren(context);
     }
 
-
     @Override
-    public void encodeEnd(FacesContext context) throws IOException {
+    public void encodeEnd(FacesContext context) throws IOException
+    {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
         super.encodeEnd(context);
     }
 
     @Override
-    protected void beforeRenderResponse(FacesContext context) {
+    protected void beforeRenderResponse(FacesContext context)
+    {
         super.beforeRenderResponse(context);
         updateModel(true, true, true);
     }
 
-    private void updateModel(boolean updateSortingFromBindings, boolean updatePageIndex, boolean readActualData) {
+    private void updateModel(boolean updateSortingFromBindings, boolean updatePageIndex, boolean readActualData)
+    {
         TableDataModel model = getModel();
         model.startUpdate();
         int incomingPageIndex = Integer.MIN_VALUE;
-        try {
-            if (updateSortingFromBindings) {
+        try
+        {
+            if (updateSortingFromBindings)
+            {
                 updateSortingFromBindings();
                 getModel().setSortingRules(getSortingRules());
             }
@@ -246,26 +283,35 @@ public class DataTable extends AbstractTable {
             model.setFilters(getActiveFilters());
             model.setPageSize(getPageSize());
 
-            if (updatePageIndex) {
+            if (updatePageIndex)
+            {
                 incomingPageIndex = getPageIndex();
                 model.setPageIndex(incomingPageIndex);
             }
-        } finally {
+        }
+        finally
+        {
             model.endUpdate();
-            if (updatePageIndex && incomingPageIndex != Integer.MIN_VALUE) {
+            if (updatePageIndex && incomingPageIndex != Integer.MIN_VALUE)
+            {
                 int newPageIndex = model.getPageIndex();
-                if (newPageIndex != incomingPageIndex) {
+                if (newPageIndex != incomingPageIndex)
+                {
                     setPageIndex(newPageIndex);
                 }
             }
         }
     }
 
-    private void validatePageIndex() {
+    private void validatePageIndex()
+    {
         Integer pageCount = getRenderedPageCount();
-        if (pageCount == null) {
-            // renderedPageCount is set on rendering. It's possible that there's no previous rendering, and processUpdates
-            // is invoked anyway because table's "rendered" attribute just becamse true on processDecodes phase (see JSFC-3600)
+        if (pageCount == null)
+        {
+            // renderedPageCount is set on rendering. It's possible that there's
+            // no previous rendering, and processUpdates
+            // is invoked anyway because table's "rendered" attribute just
+            // becamse true on processDecodes phase (see JSFC-3600)
             return;
         }
 
@@ -279,14 +325,15 @@ public class DataTable extends AbstractTable {
             setPageIndex(newPageIndex);
     }
 
-
-    public List getRowListForFiltering(Filter filter) {
+    public List getRowListForFiltering(Filter filter)
+    {
         TableDataModel tableDataModel = (TableDataModel) getUiDataValue();
         List result = tableDataModel.getRowListForFiltering(filter);
         return result;
     }
 
-    public boolean isDataSourceEmpty() {
+    public boolean isDataSourceEmpty()
+    {
         TableDataModel model = getModel();
         if (model == null)
             return true;
@@ -294,9 +341,11 @@ public class DataTable extends AbstractTable {
         return result;
     }
 
-    public void setRowIndex(int rowIndex) {
+    public void setRowIndex(int rowIndex)
+    {
         super.setRowIndex(rowIndex);
-        if (rowIndexVar != null) {
+        if (rowIndexVar != null)
+        {
             int pageSize = getPageSize();
             int recordNo = pageSize > 0 ? pageSize * getPageIndex() + rowIndex : rowIndex;
             ExternalContext externalContext = getFacesContext().getExternalContext();
@@ -306,33 +355,42 @@ public class DataTable extends AbstractTable {
 
     }
 
-    public boolean getCustomDataProviding() {
+    public boolean getCustomDataProviding()
+    {
         return ValueBindings.get(this, "customDataProviding", customDataProviding, false);
     }
 
-    public void setCustomDataProviding(boolean customDataProviding) {
+    public void setCustomDataProviding(boolean customDataProviding)
+    {
         this.customDataProviding = customDataProviding;
     }
 
-    protected boolean isRowInColumnSelected(BaseColumn column, Map<String, Object> requestMap, String var) {
+    protected boolean isRowInColumnSelected(BaseColumn column, Map<String, Object> requestMap, String var)
+    {
         Object rowData = Faces.var(getVar());
         Object rowKey = getModel().requestRowKeyByRowData(FacesContext.getCurrentInstance(), requestMap, var, rowData, -1, -1);
         List selectedRowKeys = getSelectedRowKeys(column);
         return selectedRowKeys.contains(rowKey);
     }
 
-    private List getSelectedRowKeys(BaseColumn column) {
-        if (column instanceof SelectionColumn) {
+    private List getSelectedRowKeys(BaseColumn column)
+    {
+        if (column instanceof SelectionColumn)
+        {
             DataTableSelection selection = (DataTableSelection) getSelection();
             return selection.getSelectedRowKeys();
-        } else if (column instanceof CheckboxColumn) {
+        }
+        else if (column instanceof CheckboxColumn)
+        {
             return ((CheckboxColumn) column).getSelectedRowKeys();
-        } else
+        }
+        else
             throw new IllegalArgumentException("Unkown column type: " + (column != null ? column.getClass().getName() : "null"));
     }
 
     @Override
-    public void filterChanged(Filter filter) {
+    public void filterChanged(Filter filter)
+    {
         if (getPageIndex() > 0)
             setPageIndex(0);
     }

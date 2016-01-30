@@ -32,6 +32,7 @@
       <!-- @default null -->
       <!-- @el false -->
     </attribute>
+   
     <attribute>
       <description>A flag that indicates whether or not the component is visible.</description>
       <name>rendered</name>
@@ -438,7 +439,6 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-
     <attribute>
       <description>A style for the entire DataTable component.</description>
       <name>style</name>
@@ -472,6 +472,16 @@
     <attribute>
       <description>A CSS class name for the DataTable header section.</description>
       <name>headerSectionClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>render column by comma separated ids</description>
+      <name>renderColumnByIds</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.table;
 
+import org.apache.commons.collections.IteratorUtils;
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.TableStyles;
@@ -31,7 +32,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -126,6 +129,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private String columnIdVar;
     private String columnIndexVar;
     private Iterable<String> columnsOrder;
+    private Iterable<String> renderColumnByIds;
 
     private String sortedAscendingImageUrl;
     private String sortedDescendingImageUrl;
@@ -174,6 +178,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 subHeaderRowStyle, subHeaderRowClass, subHeaderRowSeparator, focusedStyle, focusedClass,
                 rolloverRowStyle, rolloverRowClass, noDataRowStyle, noDataRowClass,
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
+                saveAttachedState(context, renderColumnByIds),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
         autoFilterDelay};
     }
@@ -257,6 +262,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         columnIndexVar = (String) state[i++];
         columnIdVar = (String) state[i++];
         columnsOrder = (Iterable<String>) restoreAttachedState(context, state[i++]);
+        renderColumnByIds = (Iterable<String>) restoreAttachedState(context, state[i++]);
         sortedAscendingImageUrl = (String) state[i++];
         sortedDescendingImageUrl = (String) state[i++];
         cachedClientId = (String) state[i++];
@@ -381,32 +387,65 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return cachedRenderedColumns;
     }
 
+    
+    
+   
+
     private List<BaseColumn> calculateRenderedColumns() {
         Iterable<String> columnsOrder = getColumnsOrder();
+        List<String> colIdList = null;
+        if(getRenderColumnByIds() != null)
+            colIdList = IteratorUtils.toList(getRenderColumnByIds().iterator());
         if (columnsOrder == null) {
             List<BaseColumn> allColumns = getAllColumns();
             List<BaseColumn> renderedColumns = new ArrayList<BaseColumn>(allColumns.size());
-            for (BaseColumn column : allColumns) {
-                if (column.isRendered())
-                    renderedColumns.add(column);
+            if(colIdList != null && colIdList.size() > 0)
+            {
+                for (BaseColumn column : allColumns)
+                {
+                    if (column.isRendered() && colIdList.contains(column.getId()))
+                        renderedColumns.add(column);
+                }
+            }
+            else
+            {
+                for (BaseColumn column : allColumns)
+                {
+                    if (column.isRendered())
+                        renderedColumns.add(column);
+                }
             }
             return renderedColumns;
         }
         List<BaseColumn> allColumns = getAllColumns();
         List<BaseColumn> result = new ArrayList<BaseColumn>();
-        for (String columnId : columnsOrder) {
-            if (columnId == null)
-                throw new IllegalStateException(
-                        "columnsOrder collection shouldn't contain null entries; table's clientId = " + getClientId(getFacesContext()));
-            /*if (!(s instanceof String))
+        if(colIdList != null && colIdList.size() > 0)
+        {
+            for (String columnId : columnsOrder) {
+                BaseColumn colById = findColumnById(allColumns, columnId);
+                if(colById != null)
+                {
+                    if (colById.isRendered() && colIdList.contains(colById.getId()))
+                        result.add(colById);
+                }
+            }
+        }
+        else
+        {
+            for (String columnId : columnsOrder) {
+                if (columnId == null)
+                    throw new IllegalStateException(
+                            "columnsOrder collection shouldn't contain null entries; table's clientId = " + getClientId(getFacesContext()));
+                /*if (!(s instanceof String))
                 throw new IllegalStateException(
                         "columnsOrder collection should only contain String instances which specify id's of columns in order " +
                                 "of their appearance, but an instance of " + s.getClass() + " was found; table's clientId = " + getClientId(getFacesContext()));*/
-            BaseColumn colById = findColumnById(allColumns, columnId);
-            if (colById == null)
-                throw new IllegalStateException("columnsOrder collection contains an id that doesn't point to an existing column: " + columnId + "; table's clientId = " + getClientId(getFacesContext()));
-            if (colById.isRendered())
-                result.add(colById);
+                BaseColumn colById = findColumnById(allColumns, columnId);
+                if (colById == null)
+                    throw new IllegalStateException("columnsOrder collection contains an id that doesn't point to an existing column: " + columnId + "; table's clientId = " + getClientId(getFacesContext()));
+                if (colById.isRendered())
+                    result.add(colById);
+            }
         }
         return result;
     }
@@ -472,7 +511,16 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     public void setColumnsOrder(Iterable<String> columnsOrder) {
         this.columnsOrder = columnsOrder;
     }
+    
+    public Iterable<String> getRenderColumnByIds()
+    {
+        return ValueBindings.get(this, "renderColumnByIds", renderColumnByIds, Iterable.class);
+    }
 
+    public void setRenderColumnByIds(Iterable<String> renderColumnByIds)
+    {
+        this.renderColumnByIds = renderColumnByIds;
+    }
 
     public String getSortedAscendingImageUrl() {
         return ValueBindings.get(this, "sortedAscendingImageUrl", sortedAscendingImageUrl);
