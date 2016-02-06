@@ -67,5 +67,6 @@ public abstract class BaseColumnTag extends AbstractComponentTag {
         setStringProperty(component, "footerOnmousemove");
         setStringProperty(component, "footerOnmouseout");
         setStringProperty(component, "footerOnmouseup");
+        setBooleanProperty(component, "baseColumn");
     }
 }

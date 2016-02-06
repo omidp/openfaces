@@ -75,6 +75,8 @@ public class BaseColumn extends UIColumn {
     private String footerOnmousemove;
     private String footerOnmouseout;
     private String footerOnmouseup;
+    
+    private Boolean baseColumn;
 
     @Override
     public Object saveState(FacesContext context) {
@@ -88,7 +90,7 @@ public class BaseColumn extends UIColumn {
                 headerOnmousemove, headerOnmouseout, headerOnmouseup, bodyOnclick, bodyOndblclick,
                 bodyOnmousedown, bodyOnmouseover, bodyOnmousemove, bodyOnmouseout, bodyOnmouseup,
                 footerOnclick, footerOndblclick, footerOnmousedown, footerOnmouseover, footerOnmousemove,
-                footerOnmouseout, footerOnmouseup};
+                footerOnmouseout, footerOnmouseup, baseColumn};
     }
 
     @Override
@@ -142,6 +144,7 @@ public class BaseColumn extends UIColumn {
         footerOnmousemove = (String) state[i++];
         footerOnmouseout = (String) state[i++];
         footerOnmouseup = (String) state[i++];
+        baseColumn = (Boolean)state[i++];
     }
 
     public String getHeaderValue() {
@@ -515,6 +518,16 @@ public class BaseColumn extends UIColumn {
 
     public void setFooterOnmouseup(String onmouseup) {
         footerOnmouseup = onmouseup;
+    }
+
+    public boolean isBaseColumn()
+    {
+        return ValueBindings.get(this, "baseColumn", baseColumn, true);
+    }
+
+    public void setBaseColumn(boolean baseColumn)
+    {
+        this.baseColumn = baseColumn;
     }
 
     public AbstractTable getTable() {

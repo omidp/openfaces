@@ -411,7 +411,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             {
                 for (BaseColumn column : allColumns)
                 {
-                    if (column.isRendered())
+                    if (column.isRendered() && column.isBaseColumn())
                         renderedColumns.add(column);
                 }
             }
@@ -443,7 +443,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 BaseColumn colById = findColumnById(allColumns, columnId);
                 if (colById == null)
                     throw new IllegalStateException("columnsOrder collection contains an id that doesn't point to an existing column: " + columnId + "; table's clientId = " + getClientId(getFacesContext()));
-                if (colById.isRendered())
+                if (colById.isRendered() && colById.isBaseColumn())
                     result.add(colById);
             }
         }

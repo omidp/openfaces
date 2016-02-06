@@ -1185,6 +1185,19 @@
     <tag-class>org.openfaces.taglib.jsp.table.ColumnJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
+      <description>
+      	just like rendered, all columns are base column. 
+      	those columns that are not base column does not show in datatable but will be added to column visibility pick list 
+      </description>
+      <name>baseColumn</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>The component identifier.</description>
       <name>id</name>
       <deferred-value>
